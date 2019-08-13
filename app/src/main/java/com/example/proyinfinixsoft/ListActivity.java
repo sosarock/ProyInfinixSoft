@@ -1,12 +1,16 @@
 package com.example.proyinfinixsoft;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.proyinfinixsoft.adapters.Adapter;
 import com.example.proyinfinixsoft.entities.Empleado;
+import com.example.proyinfinixsoft.entities.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,14 +35,17 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     public static final String EXTRA_APELLIDO = "apellido";
     public static final String EXTRA_DEPARTAMENTO = "departamento";
     public static final String EXTRA_PUESTO = "puesto";
-    public static final String EXTRA_TAREA= "tarea";
+    public static final String EXTRA_TAREA = "tarea";
 
     private RecyclerView recycler;
     private Adapter adaptor;
     private ArrayList<Empleado> trabajadores;
     private RequestQueue requestQueue;
+    private TextView bienvenida;
+    private Button cerrarSesion;
 
-    private Button item;
+
+   // private Button item;
 
     @SuppressLint("ResourceType")
     @Override
@@ -49,12 +57,46 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+        bienvenida = findViewById(R.id.tvBienvenida);
+
+        cerrarSesion = findViewById(R.id.btnSalir);
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferneces = getSharedPreferences
+                        ("pref", Context.MODE_PRIVATE);
+
+
+                SharedPreferences.Editor editor = preferneces.edit();
+                editor.putString("ulitmoNombreIngresado", "");
+                editor.putString("ulitmoApellidoIngresado", "");
+                editor.putString("ulitmoEmailIngresado", "");
+                editor.putString("ulitmoPassIngresado", "");
+
+                editor.commit();
+                Intent i = new Intent(ListActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+
         trabajadores = new ArrayList<>();
 
         requestQueue = Volley.newRequestQueue(this);
 
-        item = findViewById(R.id.btnDetallesItem);
 
+        Usuario usuario = getIntent().getParcelableExtra("usuario");
+        if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
+            bienvenida.setText("Bienvenido " + usuario.getNombre());
+        } else {
+          //  item.setVisibility(View.GONE);
+            bienvenida.setVisibility(View.GONE);
+            cerrarSesion.setVisibility(View.GONE);
+
+        }
 
 
         ParseJSON();
@@ -106,7 +148,6 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     }
 
 
-
     @Override
     public void onItemClick(int position) {
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
@@ -120,4 +161,6 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
         startActivity(detalleIntent);
     }
+
+
 }

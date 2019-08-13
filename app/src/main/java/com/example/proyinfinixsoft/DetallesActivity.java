@@ -3,6 +3,8 @@ package com.example.proyinfinixsoft;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,12 +26,21 @@ public class DetallesActivity extends AppCompatActivity {
     private TextView departamento;
     private TextView puesto;
     private TextView tareas;
+    private Button atras;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles);
+
+        atras = findViewById(R.id.btnAtrasDetalles);
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Intent i = getIntent();
         String urlFotoEmpleado = i.getStringExtra(EXTRA_URL);

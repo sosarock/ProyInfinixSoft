@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,8 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btnEntrar = findViewById(R.id.btnLogin);
         btnEntrar.setOnClickListener(this);
-          btnVerLista = findViewById(R.id.btnVerLista);
-          btnVerLista.setOnClickListener(this);
+        btnVerLista = findViewById(R.id.btnVerLista);
+        btnVerLista.setOnClickListener(this);
 
 
     }
@@ -103,8 +102,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         editor.commit();
 
-                        Toast.makeText(LoginActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
-
                         Usuario usuario = new Usuario(nombreDetails, apellidoDetails, emailDetails, passDetails);
 
                         Intent i = new Intent(LoginActivity.this, ListActivity.class);
@@ -120,10 +117,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tvRegistrar:
                 Intent i = new Intent(LoginActivity.this, RegistroActivity.class);
                 startActivity(i);
-               // finish();
+                // finish();
                 break;
             case R.id.btnVerLista:
+                SharedPreferences preferneces = getSharedPreferences
+                        ("pref", Context.MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = preferneces.edit();
+                editor.putString("ulitmoNombreIngresado", "");
+                editor.putString("ulitmoApellidoIngresado", "");
+                editor.putString("ulitmoEmailIngresado", "");
+                editor.putString("ulitmoPassIngresado", "");
+
+                editor.commit();
+
+                Usuario usuario = new Usuario("", "", "", "");
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
+                i2.putExtra("usuario", usuario);
                 startActivity(i2);
                 //finish();
                 break;
