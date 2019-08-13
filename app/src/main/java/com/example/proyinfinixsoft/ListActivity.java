@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,7 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListActivity extends AppCompatActivity implements Adapter.OnClickItemListener {
 
@@ -34,6 +38,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     public static final String EXTRA_NOMBRE = "nombre";
     public static final String EXTRA_APELLIDO = "apellido";
     public static final String EXTRA_EDAD = "edad";
+    public static final String EXTRA_FECHA = "fecha";
     public static final String EXTRA_DEPARTAMENTO = "departamento";
     public static final String EXTRA_PUESTO = "puesto";
     public static final String EXTRA_TAREA = "tarea";
@@ -104,7 +109,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/136yv3";
+        String url = "https://api.myjson.com/bins/17yv4v";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -121,12 +126,27 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String apellido = emp.getString("apellido");
                                 int edad = emp.getInt("edad");
 
+
+                                // String -> Date
+                                //  SimpleDateFormat.parse(String);
+
+                                // Date -> String
+                                // SimpleDateFormat.format(date);
+
+
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                String dateInString = emp.getString("fecha");
+
+                                Date fechaIngreso = formatter.parse(dateInString);
+
+
                                 String departamento = emp.getString("departamento");
                                 String puesto = emp.getString("puesto");
                                 String tareaActuales = emp.getString("tarea");
 
-                                trabajadores.add(new Empleado(foto, nombre, apellido, edad, departamento, puesto, tareaActuales));
+                                trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
+                                Toast.makeText(ListActivity.this, formatter.format(fechaIngreso), Toast.LENGTH_SHORT).show();
 
                             }
                             adaptor = new Adapter(ListActivity.this, trabajadores);
@@ -135,6 +155,8 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
 
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
@@ -152,16 +174,31 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
     @Override
     public void onItemClick(int position) {
+
+
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         detalleIntent.putExtra(EXTRA_URL, clickInEmpleado.getFoto());
+
+
         detalleIntent.putExtra(EXTRA_NOMBRE, clickInEmpleado.getNombre());
+
         detalleIntent.putExtra(EXTRA_APELLIDO, clickInEmpleado.getApellido());
+
         detalleIntent.putExtra(EXTRA_EDAD, clickInEmpleado.getEdad());
+
+
+        detalleIntent.putExtra(EXTRA_FECHA, "" + formatter.format(clickInEmpleado.getFechaDeIngreso()));
+
+
         detalleIntent.putExtra(EXTRA_DEPARTAMENTO, clickInEmpleado.getDepartamento());
+
         detalleIntent.putExtra(EXTRA_PUESTO, clickInEmpleado.getPuesto());
+
         detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
+
         startActivity(detalleIntent);
     }
 

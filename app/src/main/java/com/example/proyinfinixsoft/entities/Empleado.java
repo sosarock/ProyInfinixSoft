@@ -3,13 +3,15 @@ package com.example.proyinfinixsoft.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class Empleado implements Parcelable {
 
     private String foto;
     private String nombre;
     private String apellido;
     private int edad;
-    //  private Date fechaDeIngreso;
+    private Date fechaDeIngreso;
     private String departamento;
     private String puesto;
     private String tareasActuales;
@@ -22,33 +24,6 @@ public class Empleado implements Parcelable {
         departamento = in.readString();
         puesto = in.readString();
         tareasActuales = in.readString();
-    }
-
-    public static final Creator<Empleado> CREATOR = new Creator<Empleado>() {
-        @Override
-        public Empleado createFromParcel(Parcel in) {
-            return new Empleado(in);
-        }
-
-        @Override
-        public Empleado[] newArray(int size) {
-            return new Empleado[size];
-        }
-    };
-
-    public Empleado(String foto, String nombre, String apellido, int edad, String departamento, String puesto, String tareasActuales) {
-        this.foto = foto;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.edad = edad;
-        this.departamento = departamento;
-        this.puesto = puesto;
-        this.tareasActuales = tareasActuales;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public String getFoto() {
@@ -67,6 +42,10 @@ public class Empleado implements Parcelable {
         return edad;
     }
 
+    public Date getFechaDeIngreso() {
+        return fechaDeIngreso;
+    }
+
     public String getDepartamento() {
         return departamento;
     }
@@ -77,6 +56,34 @@ public class Empleado implements Parcelable {
 
     public String getTareasActuales() {
         return tareasActuales;
+    }
+
+    public Empleado(String foto, String nombre, String apellido, int edad, Date fechaDeIngreso, String departamento, String puesto, String tareasActuales) {
+        this.foto = foto;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.fechaDeIngreso = fechaDeIngreso;
+        this.departamento = departamento;
+        this.puesto = puesto;
+        this.tareasActuales = tareasActuales;
+    }
+
+    public static final Creator<Empleado> CREATOR = new Creator<Empleado>() {
+        @Override
+        public Empleado createFromParcel(Parcel in) {
+            return new Empleado(in);
+        }
+
+        @Override
+        public Empleado[] newArray(int size) {
+            return new Empleado[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
