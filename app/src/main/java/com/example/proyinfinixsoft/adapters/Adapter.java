@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.example.proyinfinixsoft.R;
 import com.example.proyinfinixsoft.entities.Empleado;
@@ -23,9 +23,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Empleado> trabajadores;
     private OnClickItemListener mListener;
+    private Button item;
 
     public interface OnClickItemListener {
         void onItemClick(int position);
+
     }
 
     public void setOnClickItemListener(OnClickItemListener listener) {
@@ -73,6 +75,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView nombre;
         TextView apellido;
 
+
         //CONSTRUCTOR
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,13 +83,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             foto = itemView.findViewById(R.id.ivFotoPerfil);
             nombre = itemView.findViewById(R.id.tvNombre);
             apellido = itemView.findViewById(R.id.tvApellido);
+            item = itemView.findViewById(R.id.btnDetallesItem);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mListener !=null){
+                    if (mListener != null) {
                         int position = getAdapterPosition();
-                        if(position!= RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             mListener.onItemClick(position);
                         }
                     }

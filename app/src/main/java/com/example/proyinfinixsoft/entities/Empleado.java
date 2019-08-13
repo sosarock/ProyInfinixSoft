@@ -3,16 +3,26 @@ package com.example.proyinfinixsoft.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class Empleado implements Parcelable {
 
     private String foto;
     private String nombre;
     private String apellido;
+  //  private  int edad;
+  //  private Date fechaDeIngreso;
+    private String departamento;
+    private String puesto;
+    private String tareasActuales;
 
-    protected Empleado(Parcel in) {
-        foto = in.readString();
-        nombre = in.readString();
-        apellido = in.readString();
+    public Empleado(String foto, String nombre, String apellido, String departamento, String puesto, String tareasActuales) {
+        this.foto = foto;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.departamento = departamento;
+        this.puesto = puesto;
+        this.tareasActuales = tareasActuales;
     }
 
     public String getFoto() {
@@ -27,10 +37,25 @@ public class Empleado implements Parcelable {
         return apellido;
     }
 
-    public Empleado(String foto, String nombre, String apellido) {
-        this.foto = foto;
-        this.nombre = nombre;
-        this.apellido = apellido;
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public String getTareasActuales() {
+        return tareasActuales;
+    }
+
+    protected Empleado(Parcel in) {
+        foto = in.readString();
+        nombre = in.readString();
+        apellido = in.readString();
+        departamento = in.readString();
+        puesto = in.readString();
+        tareasActuales = in.readString();
     }
 
     public static final Creator<Empleado> CREATOR = new Creator<Empleado>() {
@@ -55,5 +80,8 @@ public class Empleado implements Parcelable {
         parcel.writeString(foto);
         parcel.writeString(nombre);
         parcel.writeString(apellido);
+        parcel.writeString(departamento);
+        parcel.writeString(puesto);
+        parcel.writeString(tareasActuales);
     }
 }

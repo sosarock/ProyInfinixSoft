@@ -1,10 +1,12 @@
 package com.example.proyinfinixsoft;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,12 +28,18 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     public static final String EXTRA_URL = "foto";
     public static final String EXTRA_NOMBRE = "nombre";
     public static final String EXTRA_APELLIDO = "apellido";
+    public static final String EXTRA_DEPARTAMENTO = "departamento";
+    public static final String EXTRA_PUESTO = "puesto";
+    public static final String EXTRA_TAREA= "tarea";
 
     private RecyclerView recycler;
     private Adapter adaptor;
     private ArrayList<Empleado> trabajadores;
     private RequestQueue requestQueue;
 
+    private Button item;
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +53,16 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
         requestQueue = Volley.newRequestQueue(this);
 
+        item = findViewById(R.id.btnDetallesItem);
+
+
+
         ParseJSON();
     }
 
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/10bcuj";
+        String url = "https://api.myjson.com/bins/1gvno3";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -65,8 +77,11 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String foto = emp.getString("foto");
                                 String nombre = emp.getString("nombre");
                                 String apellido = emp.getString("apellido");
+                                String departamento = emp.getString("departamento");
+                                String puesto = emp.getString("puesto");
+                                String tareaActuales = emp.getString("tarea");
 
-                                trabajadores.add(new Empleado(foto, nombre, apellido));
+                                trabajadores.add(new Empleado(foto, nombre, apellido, departamento, puesto, tareaActuales));
 
 
                             }
@@ -90,15 +105,19 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         requestQueue.add(request);
     }
 
+
+
     @Override
     public void onItemClick(int position) {
-        Intent detalleIntent = new Intent(this, DetallesActivity.class);
+        Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
 
         detalleIntent.putExtra(EXTRA_URL, clickInEmpleado.getFoto());
         detalleIntent.putExtra(EXTRA_NOMBRE, clickInEmpleado.getNombre());
         detalleIntent.putExtra(EXTRA_APELLIDO, clickInEmpleado.getApellido());
-
+        detalleIntent.putExtra(EXTRA_DEPARTAMENTO, clickInEmpleado.getDepartamento());
+        detalleIntent.putExtra(EXTRA_PUESTO, clickInEmpleado.getPuesto());
+        detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
         startActivity(detalleIntent);
     }
 }
