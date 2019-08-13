@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f2c230</color>
+    <color name="colorPrimaryDark">#D98E04</color>
+    <color name="colorAccent">#0d0d0d</color>
+
+
+    <!--color de los checkbox-->
+    <style name="colorCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">#D98E04</item>
+        <item name="android:textColorSecondary">#f2c230</item>
+    </style>
+
+</resources>
