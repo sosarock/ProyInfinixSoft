@@ -33,6 +33,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     public static final String EXTRA_URL = "foto";
     public static final String EXTRA_NOMBRE = "nombre";
     public static final String EXTRA_APELLIDO = "apellido";
+    public static final String EXTRA_EDAD = "edad";
     public static final String EXTRA_DEPARTAMENTO = "departamento";
     public static final String EXTRA_PUESTO = "puesto";
     public static final String EXTRA_TAREA = "tarea";
@@ -45,7 +46,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     private Button cerrarSesion;
 
 
-   // private Button item;
+    // private Button item;
 
     @SuppressLint("ResourceType")
     @Override
@@ -56,7 +57,6 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         recycler = findViewById(R.id.rvList);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-
 
 
         bienvenida = findViewById(R.id.tvBienvenida);
@@ -92,7 +92,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
             bienvenida.setText("Bienvenido " + usuario.getNombre());
         } else {
-          //  item.setVisibility(View.GONE);
+            //  item.setVisibility(View.GONE);
             bienvenida.setVisibility(View.GONE);
             cerrarSesion.setVisibility(View.GONE);
 
@@ -104,7 +104,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/1gvno3";
+        String url = "https://api.myjson.com/bins/136yv3";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -119,11 +119,13 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String foto = emp.getString("foto");
                                 String nombre = emp.getString("nombre");
                                 String apellido = emp.getString("apellido");
+                                int edad = emp.getInt("edad");
+
                                 String departamento = emp.getString("departamento");
                                 String puesto = emp.getString("puesto");
                                 String tareaActuales = emp.getString("tarea");
 
-                                trabajadores.add(new Empleado(foto, nombre, apellido, departamento, puesto, tareaActuales));
+                                trabajadores.add(new Empleado(foto, nombre, apellido, edad, departamento, puesto, tareaActuales));
 
 
                             }
@@ -156,6 +158,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         detalleIntent.putExtra(EXTRA_URL, clickInEmpleado.getFoto());
         detalleIntent.putExtra(EXTRA_NOMBRE, clickInEmpleado.getNombre());
         detalleIntent.putExtra(EXTRA_APELLIDO, clickInEmpleado.getApellido());
+        detalleIntent.putExtra(EXTRA_EDAD, clickInEmpleado.getEdad());
         detalleIntent.putExtra(EXTRA_DEPARTAMENTO, clickInEmpleado.getDepartamento());
         detalleIntent.putExtra(EXTRA_PUESTO, clickInEmpleado.getPuesto());
         detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());

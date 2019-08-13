@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnEntrar;
     private Button btnVerLista;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnEntrar.setOnClickListener(this);
         btnVerLista = findViewById(R.id.btnVerLista);
         btnVerLista.setOnClickListener(this);
-
 
     }
 
@@ -120,6 +120,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // finish();
                 break;
             case R.id.btnVerLista:
+
+
+
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
 
@@ -135,6 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
                 i2.putExtra("usuario", usuario);
                 startActivity(i2);
+
                 //finish();
                 break;
         }

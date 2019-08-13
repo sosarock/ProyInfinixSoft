@@ -25,6 +25,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private OnClickItemListener mListener;
     private Button item;
 
+
+
+
+
+
     public interface OnClickItemListener {
         void onItemClick(int position);
 
@@ -57,9 +62,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String apellido = datosEmpleado.getApellido();
 
 
-        Picasso.with(mContext).load(fotoUrl).fit().centerInside().into(viewHolder.foto); //cargar la foto del juego
-        viewHolder.nombre.setText(nombre); // nombre del juego
-        viewHolder.apellido.setText(apellido); // nombre del juego
+        Picasso.with(mContext).load(fotoUrl).fit().centerInside().into(viewHolder.foto);
+        viewHolder.nombre.setText(nombre);
+        viewHolder.apellido.setText(apellido);
 
 
     }
@@ -85,6 +90,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             apellido = itemView.findViewById(R.id.tvApellido);
             item = itemView.findViewById(R.id.btnDetallesItem);
 
+
+
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,11 +99,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             mListener.onItemClick(position);
+
                         }
                     }
                 }
             });
 
+
         }
     }
+
 }
