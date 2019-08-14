@@ -1,6 +1,7 @@
 package com.example.proyinfinixsoft.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.proyinfinixsoft.R;
@@ -15,19 +17,20 @@ import com.example.proyinfinixsoft.entities.Empleado;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
 
     private Context mContext;
+
     private ArrayList<Empleado> trabajadores;
+
     private OnClickItemListener mListener;
     private Button item;
-
-
-
-
+    private LinearLayout fondo;
+    private Button verLista;
 
 
     public interface OnClickItemListener {
@@ -39,12 +42,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         mListener = listener;
     }
 
-
-    public Adapter(Context mContext, ArrayList<Empleado> games) {
-        this.mContext = mContext;
-        this.trabajadores = games;
+    public LinearLayout getFondo() {
+        return fondo;
     }
 
+    public void setFondo(LinearLayout fondo) {
+        this.fondo = fondo;
+    }
+
+    public Adapter(Context mContext, ArrayList<Empleado> trabajadores, LinearLayout fondo) {
+        this.mContext = mContext;
+        this.trabajadores = trabajadores;
+        this.fondo = fondo;
+    }
 
     @NonNull
     @Override
@@ -55,6 +65,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+
+        TextView fecha;
+
         Empleado datosEmpleado = trabajadores.get(position);
 
         String fotoUrl = datosEmpleado.getFoto();
@@ -66,8 +79,31 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         viewHolder.nombre.setText(nombre);
         viewHolder.apellido.setText(apellido);
 
+        try {
+
+
+            Calendar current = Calendar.getInstance();
+            long fech = current.getTimeInMillis() - datosEmpleado.getFechaDeIngreso().getTime();
+
+            int dias = (int) (fech / 86400000);
+            System.out.println(dias);
+
+            if (dias <= 1826) {
+                fondo.setBackgroundColor(Color.GREEN);
+            } else if (dias >= 3652) {
+                fondo.setBackgroundColor(Color.argb(255, 255, 152, 0));
+
+            } else if (dias > 1826 && dias < 3652) {
+                fondo.setBackgroundColor(Color.WHITE);
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -90,6 +126,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             apellido = itemView.findViewById(R.id.tvApellido);
             item = itemView.findViewById(R.id.btnDetallesItem);
 
+            verLista = itemView.findViewById(R.id.btnVerLista);
+
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.setVisibility(View.INVISIBLE);
+
+                }
+            });
+
+
+            fondo = itemView.findViewById(R.id.fondoItem);
 
 
             item.setOnClickListener(new View.OnClickListener() {
@@ -102,11 +150,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                         }
                     }
+
+
                 }
             });
 
 
         }
+
     }
+
 
 }

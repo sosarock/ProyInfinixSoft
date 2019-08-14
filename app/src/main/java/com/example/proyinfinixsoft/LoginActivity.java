@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnVerLista;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +65,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnVerLista = findViewById(R.id.btnVerLista);
         btnVerLista.setOnClickListener(this);
 
+
     }
 
 
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.btnLogin:
+
+
                 String email = etEmail.getText().toString();
 
                 SharedPreferences preferences = getSharedPreferences
@@ -122,7 +128,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnVerLista:
 
 
-
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
 
@@ -131,12 +136,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString("ulitmoApellidoIngresado", "");
                 editor.putString("ulitmoEmailIngresado", "");
                 editor.putString("ulitmoPassIngresado", "");
+                editor.putString("prefVisible","");
 
                 editor.commit();
 
                 Usuario usuario = new Usuario("", "", "", "");
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
                 i2.putExtra("usuario", usuario);
+                i2.putExtra("sinSesion","sinSesion");
                 startActivity(i2);
 
                 //finish();

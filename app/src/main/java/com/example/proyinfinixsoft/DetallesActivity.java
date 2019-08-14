@@ -1,16 +1,20 @@
 package com.example.proyinfinixsoft;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.example.proyinfinixsoft.ListActivity.EXTRA_APELLIDO;
@@ -36,6 +40,7 @@ public class DetallesActivity extends AppCompatActivity {
     private Button atras;
 
     private TextView circuloEdad;
+    private LinearLayout fondo;
 
 
     @Override
@@ -65,8 +70,6 @@ public class DetallesActivity extends AppCompatActivity {
         String apellidoEmpleado = i.getStringExtra(EXTRA_APELLIDO);
 
         int edadEmpleado = i.getIntExtra(EXTRA_EDAD, 0);
-
-
 
 
         String fechaIngreso = i.getStringExtra(EXTRA_FECHA);
@@ -108,5 +111,36 @@ public class DetallesActivity extends AppCompatActivity {
 
         circuloEdad.setText(edadCir);
 
+
+//CAMBIA DE COLOR LA FECHA DE ANTIGUEDAD , STATUS : OK!
+        try {
+
+            Calendar current = Calendar.getInstance();
+            String dateInString = fechaIngreso;
+
+
+            Date fechaIngr = null;
+            fechaIngr = formatter.parse(dateInString);
+            long fech = current.getTimeInMillis() - fechaIngr.getTime();
+
+            int dias = (int) (fech / 86400000);
+            System.out.println(dias);
+
+            if (dias <= 1826) {
+                fecha.setTextColor(Color.GREEN);
+            } else if (dias >= 3652) {
+                fecha.setTextColor(Color.argb(255, 255, 152, 0));
+
+            } else if (dias > 1826 && dias < 3652) {
+                fecha.setTextColor(Color.BLACK);
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
     }
+
 }

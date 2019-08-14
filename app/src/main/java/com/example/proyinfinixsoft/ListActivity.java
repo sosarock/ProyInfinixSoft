@@ -10,8 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,7 +51,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     private Button cerrarSesion;
 
 
-    // private Button item;
+    private LinearLayout item;
 
     @SuppressLint("ResourceType")
     @Override
@@ -63,8 +63,11 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
+        item = findViewById(R.id.fondoItem);
+
 
         bienvenida = findViewById(R.id.tvBienvenida);
+
 
         cerrarSesion = findViewById(R.id.btnSalir);
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +100,9 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
             bienvenida.setText("Bienvenido " + usuario.getNombre());
         } else {
-            //  item.setVisibility(View.GONE);
+
+
+            // item.setVisibility(View.GONE);
             bienvenida.setVisibility(View.GONE);
             cerrarSesion.setVisibility(View.GONE);
 
@@ -105,11 +110,13 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
 
         ParseJSON();
+
+
     }
 
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/17yv4v";
+        String url = "https://api.myjson.com/bins/14s7tj";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -125,18 +132,12 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String nombre = emp.getString("nombre");
                                 String apellido = emp.getString("apellido");
                                 int edad = emp.getInt("edad");
-
-
                                 // String -> Date
                                 //  SimpleDateFormat.parse(String);
-
                                 // Date -> String
                                 // SimpleDateFormat.format(date);
-
-
                                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                                 String dateInString = emp.getString("fecha");
-
                                 Date fechaIngreso = formatter.parse(dateInString);
 
 
@@ -144,12 +145,13 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String puesto = emp.getString("puesto");
                                 String tareaActuales = emp.getString("tarea");
 
+
                                 trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
-                                Toast.makeText(ListActivity.this, formatter.format(fechaIngreso), Toast.LENGTH_SHORT).show();
 
                             }
-                            adaptor = new Adapter(ListActivity.this, trabajadores);
+
+                            adaptor = new Adapter(ListActivity.this, trabajadores, item);
                             recycler.setAdapter(adaptor);
                             adaptor.setOnClickItemListener(ListActivity.this);
 
@@ -179,26 +181,14 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
         detalleIntent.putExtra(EXTRA_URL, clickInEmpleado.getFoto());
-
-
         detalleIntent.putExtra(EXTRA_NOMBRE, clickInEmpleado.getNombre());
-
         detalleIntent.putExtra(EXTRA_APELLIDO, clickInEmpleado.getApellido());
-
         detalleIntent.putExtra(EXTRA_EDAD, clickInEmpleado.getEdad());
-
-
         detalleIntent.putExtra(EXTRA_FECHA, "" + formatter.format(clickInEmpleado.getFechaDeIngreso()));
-
-
         detalleIntent.putExtra(EXTRA_DEPARTAMENTO, clickInEmpleado.getDepartamento());
-
         detalleIntent.putExtra(EXTRA_PUESTO, clickInEmpleado.getPuesto());
-
         detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
-
         startActivity(detalleIntent);
     }
 
