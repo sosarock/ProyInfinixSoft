@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">ProyInfinixSoft</string>
 
+    <!--SPLASH-->
+    <string name="coyright">Copyright © GNUno 2019</string>
+    <!--REGISTRO Y LOGIN-->
 
+    <string name="instruccionesPass">8 caracteres: min. 1 mayus,1 minus ,1 num</string>
+    <string name="inputPass">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
+    <string name="inputEmail">abcdefghijklmnopqrstuvwxyz1234567890_.-@</string>
+    <string name="inputName_Ape">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="terminos_Condiciones">Aceptar terminos y condiciones</string>
+
+    <!--PANTALLA DE DETALLES-->
+    <string name="nombre">Nombre: Omar</string>
+    <string name="apellido">Apellido: Sosa</string>
+    <string name="edad">Edad: 28</string>
+    <string name="fechaIngreso">Fecha: 20/10/1990"</string>
+    <string name="departamento">Departamento: Sistemas</string>
+    <string name="puesto">Puesto: Desarrolador</string>
+    <string name="tareas">Tarea: Programadar</string>
 </resources>

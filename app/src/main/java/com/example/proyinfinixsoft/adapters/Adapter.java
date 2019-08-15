@@ -93,26 +93,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String apellido = datosEmpleado.getApellido();
 
 
-        Date fechaReg = datosEmpleado.getFechaDeIngreso();
-        Calendar current = Calendar.getInstance();
-
-        long fech = (current.getTimeInMillis() - fechaReg.getTime());
-
-
-        int dias = (int) (fech / 86400000);
-
-        if (dias <= 1826) {
-            fondo.setBackgroundResource(background_verde);
-
-        } else if (dias >= 3652) {
-            fondo.setBackgroundResource(background_narajan);
-        } else {
-            fondo.setBackgroundResource(background_blanco);
-        }
-
         Picasso.with(mContext).load(fotoUrl).fit().centerInside().into(viewHolder.foto);
         viewHolder.nombre.setText(nombre);
         viewHolder.apellido.setText(apellido);
+
+        CambiarFondo(datosEmpleado);
 
 
         if (iniciado == false) {
@@ -158,4 +143,29 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         }
     }
+
+    public void CambiarFondo(Empleado datosEmpleado) {
+
+        Date fechaReg = datosEmpleado.getFechaDeIngreso();
+        Calendar current = Calendar.getInstance();
+
+        long fech = (current.getTimeInMillis() - fechaReg.getTime());
+
+
+        int dias = (int) (fech / 86400000);
+
+        if (dias <= 1826) {
+            fondo.setBackgroundResource(background_verde);
+
+        }
+        if (dias >= 3652) {
+            fondo.setBackgroundResource(background_narajan);
+        }
+        if (dias > 1826 && dias < 3652) {
+
+            fondo.setBackgroundResource(background_blanco);
+        }
+    }
+
+
 }

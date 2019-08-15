@@ -33,7 +33,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/colorPrimary"
-        android:digits="abcdefghijklmnopqrstuvwxyz1234567890_.-@"
+        android:digits="@string/inputEmail"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -52,7 +52,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/colorPrimary"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        android:digits="@string/inputPass"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -73,7 +73,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginEnd="32dp"
         android:alpha="0.7"
-        android:text="8 caracteres: min. 1 mayus,1 minus ,1 num"
+        android:text="@string/instruccionesPass"
         android:textColor="#000"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,46 +108,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-    <!--
-   <ImageButton
-       android:id="@+id/ibTwitter"
-       android:layout_width="40dp"
-       android:layout_height="40dp"
-       android:layout_marginStart="12dp"
-       android:layout_marginTop="32dp"
-       android:background="@drawable/button_social"
-       android:scaleType="fitCenter"
-       app:layout_constraintStart_toEndOf="@+id/ibFacebook"
-       app:layout_constraintTop_toBottomOf="@+id/tvRegistrar"
-       app:srcCompat="@drawable/twitter_icon" />
-
-  <ImageButton
-       android:id="@+id/ibFacebook"
-       android:layout_width="40dp"
-       android:layout_height="40dp"
-       android:layout_marginStart="8dp"
-       android:layout_marginTop="32dp"
-       android:layout_marginEnd="8dp"
-       android:background="@drawable/button_social"
-       android:scaleType="fitCenter"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/tvRegistrar"
-       app:srcCompat="@drawable/facebook_icon" />
-
-   <ImageButton
-       android:id="@+id/ibInstagram"
-       android:layout_width="40dp"
-       android:layout_height="40dp"
-       android:layout_marginTop="32dp"
-       android:layout_marginEnd="12dp"
-       android:background="@drawable/button_social"
-       android:scaleType="fitCenter"
-       app:layout_constraintEnd_toStartOf="@+id/ibFacebook"
-       app:layout_constraintTop_toBottomOf="@+id/tvRegistrar"
-       app:srcCompat="@drawable/instagram_icon" />
--->
 
     <View
         android:id="@+id/view"

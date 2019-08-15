@@ -61,7 +61,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     public static final String TAG_DEPARTAMENTO_USER = "departamento";
     public static final String TAG_PUESTO_USER = "puesto";
     public static final String TAG_TAREAS_USER = "tarea";
-    public static final String URL_JSON = "https://api.myjson.com/bins/1c3zyn";
+    public static final String URL_JSON = "https://api.myjson.com/bins/kdmlr";
 
 
     private RecyclerView recycler;
@@ -163,7 +163,6 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                             } else {
                                 adaptor = new Adapter(ListActivity.this, trabajadores, false);
                                 recycler.setAdapter(adaptor);
-                                adaptor.setOnClickItemListener(ListActivity.this);
                             }
 
                         } catch (JSONException e) {
