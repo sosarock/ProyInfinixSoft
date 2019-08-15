@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="#ffff"
     android:orientation="vertical"
+    android:padding="10dp"
     android:weightSum="2"
-
     tools:context=".DetallesActivity">
 
 
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="80dp"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="27dp"
             android:textColor="#000000"
             android:textSize="18sp"
             tools:ignore="MissingConstraints"
@@ -164,8 +164,8 @@
 
         <TextView
             android:id="@+id/tvTareasDetalle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
 
             android:layout_marginLeft="15dp"
@@ -173,7 +173,8 @@
             android:textColor="#000000"
             android:textSize="18sp"
             tools:ignore="MissingConstraints"
-            tools:text="Tareas: " />
+            tools:text="Tareas: \n" />
+
 
     </RelativeLayout>
 

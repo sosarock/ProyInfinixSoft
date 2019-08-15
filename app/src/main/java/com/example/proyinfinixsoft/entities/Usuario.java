@@ -20,14 +20,6 @@ public class Usuario implements Parcelable {
     private String email;
     private String password;
 
-
-    protected Usuario(Parcel in) {
-        nombre = in.readString();
-        apellido = in.readString();
-        email = in.readString();
-        password = in.readString();
-    }
-
     public Usuario(String nombre, String apellido, String email, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -49,6 +41,13 @@ public class Usuario implements Parcelable {
 
     public String getPassword() {
         return password;
+    }
+
+    protected Usuario(Parcel in) {
+        nombre = in.readString();
+        apellido = in.readString();
+        email = in.readString();
+        password = in.readString();
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {

@@ -30,9 +30,11 @@ public class Empleado implements Parcelable {
         nombre = in.readString();
         apellido = in.readString();
         edad = in.readInt();
+        fechaDeIngreso = new Date(in.readLong());
         departamento = in.readString();
         puesto = in.readString();
         tareasActuales = in.readString();
+
     }
 
     public String getFoto() {
@@ -76,6 +78,7 @@ public class Empleado implements Parcelable {
         this.departamento = departamento;
         this.puesto = puesto;
         this.tareasActuales = tareasActuales;
+
     }
 
     public static final Creator<Empleado> CREATOR = new Creator<Empleado>() {
@@ -101,6 +104,7 @@ public class Empleado implements Parcelable {
         parcel.writeString(nombre);
         parcel.writeString(apellido);
         parcel.writeInt(edad);
+        parcel.writeLong((fechaDeIngreso).getTime());
         parcel.writeString(departamento);
         parcel.writeString(puesto);
         parcel.writeString(tareasActuales);

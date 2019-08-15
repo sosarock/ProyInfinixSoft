@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.proyinfinixsoft.entities.Usuario;
+
 import java.util.regex.Pattern;
 
 /**
@@ -46,7 +48,7 @@ public class RegistroActivity extends AppCompatActivity {
                             "(?=.*[A-Z])" +          //almenos 1 letra mayuscula
                             //"(?=.*[@#$%^&+=])" +   //almenos un caracter especial
                             "(?=\\S+$)" +            //no se acepta espacios
-                            ".{6,}" +                //minimo 6 caracteres
+                            ".{3,}" +                //minimo 6 caracteres
                             "$");
 
     private EditText nombre;
@@ -197,6 +199,9 @@ public class RegistroActivity extends AppCompatActivity {
             return false;
         } else if (!PASSWORD_PATTERN.matcher(inputPass).matches()) {
             password.setError("Ingrese un password valido!");
+            return false;
+        } else if (inputPass.length() < 8) {
+            password.setError("Password demasiado corto!");
             return false;
         } else {
             password.setError(null);

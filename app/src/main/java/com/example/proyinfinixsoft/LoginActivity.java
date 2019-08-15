@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.proyinfinixsoft.entities.Usuario;
 
@@ -58,6 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnVerLista;
 
 
+    public boolean sinSesion = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,24 +94,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.btnLogin:
 
-                String email = etEmail.getText().toString();
+
+                String email = etEmail.getText().toString().trim();
+                String pass = etPass.getText().toString();
                 SharedPreferences preferences = getSharedPreferences
                         ("credencial", MODE_PRIVATE);
+
+                String verificarEmail = (String) preferences.getString(email + "dataEmail", "");
+
                 String nombreDetails = (String) preferences.getString(email + "dataNombre", "");
                 String apellidoDetails = (String) preferences.getString(email + "dataApellido", "");
                 String emailDetails = (String) preferences.getString(email + "dataEmail", "");
                 String passDetails = (String) preferences.getString(email + "dataPass", "");
 
 
-                if (emailDetails.length() == 0) {
-                    Toast.makeText(LoginActivity.this, "Email o Password es incorrecto! ", Toast.LENGTH_SHORT).show();
+                if (email.length() == 0) {
+                    etEmail.setError("El campo se encuentra vacio");
+                } else if (pass.length() == 0) {
+                    etPass.setError("El campo se encuentra vacio");
 
-                } else if (passDetails.length() == 0) {
-                    Toast.makeText(LoginActivity.this, "Email o Password es incorrecto! ", Toast.LENGTH_SHORT).show();
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    etEmail.setError("Ingrese un email valido!");
+
+                } else if (!verificarEmail.equals(etEmail.getText().toString())) {
+                    etEmail.setError("Este Email no se encuentra registrado");
+                } else if (!emailDetails.equals(etEmail.getText().toString()) ||
+                        !passDetails.equals(etPass.getText().toString())) {
+                    etEmail.setError("El Email o Password es incorrecto");
+                    etPass.setError("El Email o Password es incorrecto");
 
                 } else {
                     if (emailDetails.equals(etEmail.getText().toString()) &&
                             passDetails.equals(etPass.getText().toString())) {
+
 
                         SharedPreferences preferneces = getSharedPreferences
                                 ("pref", Context.MODE_PRIVATE);
@@ -123,6 +141,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         Usuario usuario = new Usuario(nombreDetails, apellidoDetails, emailDetails, passDetails);
                         Intent i = new Intent(LoginActivity.this, ListActivity.class);
+                       /* if (ListActivity.class.equals(ListActivity.class)) {
+                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_SINGLE_TOP);
+                        }*/
                         i.putExtra("usuario", usuario);
                         startActivity(i);
                         finish();
@@ -138,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.btnVerLista:
 
+
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
 
@@ -150,8 +172,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 editor.commit();
 
+
                 Usuario usuario = new Usuario("", "", "", "");
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
+              /*  if (ListActivity.class.equals(ListActivity.class)) {
+                    i2.setFlags(i2.FLAG_ACTIVITY_NEW_TASK | i2.FLAG_ACTIVITY_SINGLE_TOP);
+                }*/
                 i2.putExtra("usuario", usuario);
                 startActivity(i2);
                 break;

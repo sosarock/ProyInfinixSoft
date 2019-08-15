@@ -46,14 +46,9 @@ import java.util.Date;
 
 public class ListActivity extends AppCompatActivity implements Adapter.OnClickItemListener {
 
-    public static final String EXTRA_URL = "foto";
-    public static final String EXTRA_NOMBRE = "nombre";
-    public static final String EXTRA_APELLIDO = "apellido";
-    public static final String EXTRA_EDAD = "edad";
     public static final String EXTRA_FECHA = "fecha";
-    public static final String EXTRA_DEPARTAMENTO = "departamento";
-    public static final String EXTRA_PUESTO = "puesto";
-    public static final String EXTRA_TAREA = "tarea";
+    public static final String EXTRA_FECHAFORMATO = "fecha";
+    public static final String EXTRA_EMPLEADO = "empleado";
 
     private RecyclerView recycler;
     private Adapter adaptor;
@@ -70,17 +65,21 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+
         recycler = findViewById(R.id.rvList);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         item = findViewById(R.id.fondoItem);
         bienvenida = findViewById(R.id.tvBienvenida);
         cerrarSesion = findViewById(R.id.btnSalir);
+
+
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
+
 
                 SharedPreferences.Editor editor = preferneces.edit();
                 editor.putString("ulitmoNombreIngresado", "");
@@ -99,15 +98,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         trabajadores = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
 
-        Usuario usuario = getIntent().getParcelableExtra("usuario");
-        if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
-            bienvenida.setText("Bienvenido " + usuario.getNombre()+"!");
-        } else {
 
-            // item.setVisibility(View.GONE);
-            bienvenida.setVisibility(View.GONE);
-            cerrarSesion.setVisibility(View.GONE);
-        }
         ParseJSON();
     }
 
@@ -120,13 +111,14 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
      */
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/157qgn";
+        String url = "https://api.myjson.com/bins/a5rjr";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("empleado");
+
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -147,14 +139,30 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String tareaActuales = emp.getString("tarea");
 
 
-
                                 trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
                             }
 
-                            adaptor = new Adapter(ListActivity.this, trabajadores);
-                            recycler.setAdapter(adaptor);
-                            adaptor.setOnClickItemListener(ListActivity.this);
+                            Usuario usuario = getIntent().getParcelableExtra("usuario");
+                            if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
+
+                                bienvenida.setText("Bienvenido " + usuario.getNombre() + "!");
+
+
+                                adaptor = new Adapter(ListActivity.this, trabajadores, true);
+                                recycler.setAdapter(adaptor);
+                                adaptor.setOnClickItemListener(ListActivity.this);
+
+                            } else {
+
+
+                                bienvenida.setVisibility(View.GONE);
+                                cerrarSesion.setVisibility(View.GONE);
+
+                                adaptor = new Adapter(ListActivity.this, trabajadores, false);
+                                recycler.setAdapter(adaptor);
+                                adaptor.setOnClickItemListener(ListActivity.this);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -186,15 +194,23 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        detalleIntent.putExtra(EXTRA_URL, clickInEmpleado.getFoto());
-        detalleIntent.putExtra(EXTRA_NOMBRE, clickInEmpleado.getNombre());
-        detalleIntent.putExtra(EXTRA_APELLIDO, clickInEmpleado.getApellido());
-        detalleIntent.putExtra(EXTRA_EDAD, clickInEmpleado.getEdad());
         detalleIntent.putExtra(EXTRA_FECHA, "" + formatter.format(clickInEmpleado.getFechaDeIngreso()));
-        detalleIntent.putExtra(EXTRA_DEPARTAMENTO, clickInEmpleado.getDepartamento());
-        detalleIntent.putExtra(EXTRA_PUESTO, clickInEmpleado.getPuesto());
-        detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
+        long fechaEmpleado = clickInEmpleado.getFechaDeIngreso().getTime();
+
+        Empleado emp = new Empleado(
+                clickInEmpleado.getFoto(),
+                clickInEmpleado.getNombre(),
+                clickInEmpleado.getApellido(),
+                clickInEmpleado.getEdad(),
+                new Date(fechaEmpleado),
+                clickInEmpleado.getDepartamento(),
+                clickInEmpleado.getPuesto(),
+                clickInEmpleado.getTareasActuales());
+
+        detalleIntent.putExtra(EXTRA_EMPLEADO, emp);
         startActivity(detalleIntent);
+
+
     }
 
 }
