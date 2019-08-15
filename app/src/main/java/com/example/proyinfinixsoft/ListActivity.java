@@ -32,6 +32,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Class: ListActivity <br>
+ * <p>Este metodo mostrara una lista de empleado en el cual esta restringido a los detalles
+ * sino el usuario no ha iniciado sesion con una cuenta registrada previamente.</p>
+ * <p>Ultima Modificacion: 12/08/2019</p>
+ *
+ * @author Sosa Omar E.
+ * @version 1.0.0
+ * @see 12/08/2019
+ * @since JSockets 1.0.0
+ */
+
 public class ListActivity extends AppCompatActivity implements Adapter.OnClickItemListener {
 
     public static final String EXTRA_URL = "foto";
@@ -49,9 +61,8 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     private RequestQueue requestQueue;
     private TextView bienvenida;
     private Button cerrarSesion;
-
-
     private LinearLayout item;
+
 
     @SuppressLint("ResourceType")
     @Override
@@ -62,20 +73,14 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         recycler = findViewById(R.id.rvList);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-
         item = findViewById(R.id.fondoItem);
-
-
         bienvenida = findViewById(R.id.tvBienvenida);
-
-
         cerrarSesion = findViewById(R.id.btnSalir);
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
-
 
                 SharedPreferences.Editor editor = preferneces.edit();
                 editor.putString("ulitmoNombreIngresado", "");
@@ -92,31 +97,30 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
 
         trabajadores = new ArrayList<>();
-
         requestQueue = Volley.newRequestQueue(this);
-
 
         Usuario usuario = getIntent().getParcelableExtra("usuario");
         if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
-            bienvenida.setText("Bienvenido " + usuario.getNombre());
+            bienvenida.setText("Bienvenido " + usuario.getNombre()+"!");
         } else {
-
 
             // item.setVisibility(View.GONE);
             bienvenida.setVisibility(View.GONE);
             cerrarSesion.setVisibility(View.GONE);
-
         }
-
-
         ParseJSON();
-
-
     }
 
+    /**
+     * Metodo: ParseJSON
+     *
+     * <p>Este metodo hara conexion con un servidor y recibira una lista de empleados</p>
+     *
+     * @since 1.0.0
+     */
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/14s7tj";
+        String url = "https://api.myjson.com/bins/157qgn";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -131,30 +135,26 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                                 String foto = emp.getString("foto");
                                 String nombre = emp.getString("nombre");
                                 String apellido = emp.getString("apellido");
+
                                 int edad = emp.getInt("edad");
-                                // String -> Date
-                                //  SimpleDateFormat.parse(String);
-                                // Date -> String
-                                // SimpleDateFormat.format(date);
+
                                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                                 String dateInString = emp.getString("fecha");
                                 Date fechaIngreso = formatter.parse(dateInString);
-
 
                                 String departamento = emp.getString("departamento");
                                 String puesto = emp.getString("puesto");
                                 String tareaActuales = emp.getString("tarea");
 
 
-                                trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
+                                trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
                             }
 
-                            adaptor = new Adapter(ListActivity.this, trabajadores, item);
+                            adaptor = new Adapter(ListActivity.this, trabajadores);
                             recycler.setAdapter(adaptor);
                             adaptor.setOnClickItemListener(ListActivity.this);
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -169,14 +169,19 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
             }
         });
 
-
         requestQueue.add(request);
     }
 
-
+    /**
+     * Metodo: onItemClick
+     *
+     * <p>Este metodo le envia los datos del empleado seleccionado a la pantalla detalles
+     * para ser visualizada</p>
+     *
+     * @since 1.0.0
+     */
     @Override
     public void onItemClick(int position) {
-
 
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
@@ -191,6 +196,5 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         detalleIntent.putExtra(EXTRA_TAREA, clickInEmpleado.getTareasActuales());
         startActivity(detalleIntent);
     }
-
 
 }

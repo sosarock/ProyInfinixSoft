@@ -15,6 +15,17 @@ import com.example.proyinfinixsoft.entities.Usuario;
 
 import java.util.regex.Pattern;
 
+/**
+ * Class: LoginActivity <br>
+ * <p>Este metodo permite logearse al usuario con Email y password, o registrar un nuevo usuario,
+ * y ver las listas sin necesidad de logearse.</p>
+ * <p>Ultima Modificacion: 12/08/2019</p>
+ *
+ * @author Sosa Omar E.
+ * @version 1.0.0
+ * @see 12/08/2019
+ * @since JSockets 1.0.0
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     //PATRON DE VALIDACION DE EMAIL
@@ -47,8 +58,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnVerLista;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,19 +73,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnEntrar.setOnClickListener(this);
         btnVerLista = findViewById(R.id.btnVerLista);
         btnVerLista.setOnClickListener(this);
-
-
     }
 
-
+    /**
+     * Metodo: onClick
+     *
+     * <p>Este metodo contiene 3 botones con diferentes acciones</p>
+     * <p>- Loguear el usuario con email y contraseña</p>
+     * </p>- Ver la lista sin necesidad de loguearse</p>
+     * </p>- Registrar un nuevo usuario</p>
+     *
+     * @param view permite mostrar vistas de datos previamente informados en la aplicación
+     * @since 1.0.0
+     */
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.btnLogin:
 
-
                 String email = etEmail.getText().toString();
-
                 SharedPreferences preferences = getSharedPreferences
                         ("credencial", MODE_PRIVATE);
                 String nombreDetails = (String) preferences.getString(email + "dataNombre", "");
@@ -98,35 +113,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         SharedPreferences preferneces = getSharedPreferences
                                 ("pref", Context.MODE_PRIVATE);
 
-
                         SharedPreferences.Editor editor = preferneces.edit();
                         editor.putString("ulitmoNombreIngresado", nombreDetails);
                         editor.putString("ulitmoApellidoIngresado", apellidoDetails);
                         editor.putString("ulitmoEmailIngresado", emailDetails);
                         editor.putString("ulitmoPassIngresado", passDetails);
 
-
                         editor.commit();
 
                         Usuario usuario = new Usuario(nombreDetails, apellidoDetails, emailDetails, passDetails);
-
                         Intent i = new Intent(LoginActivity.this, ListActivity.class);
                         i.putExtra("usuario", usuario);
                         startActivity(i);
                         finish();
 
                     }
-
                 }
-
                 break;
+
             case R.id.tvRegistrar:
                 Intent i = new Intent(LoginActivity.this, RegistroActivity.class);
                 startActivity(i);
-                // finish();
                 break;
-            case R.id.btnVerLista:
 
+            case R.id.btnVerLista:
 
                 SharedPreferences preferneces = getSharedPreferences
                         ("pref", Context.MODE_PRIVATE);
@@ -136,20 +146,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString("ulitmoApellidoIngresado", "");
                 editor.putString("ulitmoEmailIngresado", "");
                 editor.putString("ulitmoPassIngresado", "");
-                editor.putString("prefVisible","");
+                editor.putString("prefVisible", "");
 
                 editor.commit();
 
                 Usuario usuario = new Usuario("", "", "", "");
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
                 i2.putExtra("usuario", usuario);
-                i2.putExtra("sinSesion","sinSesion");
                 startActivity(i2);
-
-                //finish();
                 break;
         }
     }
-
-
 }

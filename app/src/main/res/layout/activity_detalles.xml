@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#ffff"
     android:orientation="vertical"
     android:weightSum="2"
 
@@ -90,7 +90,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="40dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:ignore="MissingConstraints"
             tools:text="Nombre: " />
 
@@ -101,7 +101,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="80dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/tvNombreDetalle"
             tools:text="Apellido: " />
 
@@ -114,7 +114,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginRight="110dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:ignore="MissingConstraints"
             tools:text="Edad:" />
 
@@ -126,7 +126,7 @@
             android:layout_marginTop="80dp"
             android:layout_marginRight="35dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:ignore="MissingConstraints"
             tools:text="Fecha: " />
 
@@ -146,7 +146,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="160dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:text="Departamento: " />
 
 
@@ -159,7 +159,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="200dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:text="Puesto:" />
 
         <TextView
@@ -171,7 +171,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="240dp"
             android:textColor="#000000"
-            android:textSize="16dp"
+            android:textSize="18sp"
             tools:ignore="MissingConstraints"
             tools:text="Tareas: " />
 

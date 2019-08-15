@@ -2,9 +2,18 @@ package com.example.proyinfinixsoft.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.util.Date;
 
+/**
+ * Class: Empleado <br>
+ * <p>Clase Emplado con su respectivos datos y constructor.</p>
+ * <p>Ultima Modificacion: 12/08/2019</p>
+ *
+ * @author Sosa Omar E.
+ * @version 1.0.0
+ * @see 12/08/2019
+ * @since JSockets 1.0.0
+ */
 public class Empleado implements Parcelable {
 
     private String foto;

@@ -8,6 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.proyinfinixsoft.entities.Usuario;
 
+/**
+ * Class: SplashActivity <br>
+ * <p>Pantalla de Introduccion a la aplicacion.</p>
+ * <p>Ultima Modificacion: 12/08/2019</p>
+ *
+ * @author Sosa Omar E.
+ * @version 1.0.0
+ * @see 12/08/2019
+ * @since JSockets 1.0.0
+ */
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -34,14 +45,10 @@ public class SplashActivity extends AppCompatActivity {
         } else {
 
             Usuario usuario = new Usuario(nombreDetails, apellidoDetails, emailDetails, passDetails);
-
             Intent i = new Intent(SplashActivity.this, ListActivity.class);
             i.putExtra("usuario", usuario);
             startActivity(i);
             finish();
-
         }
-
     }
-
 }

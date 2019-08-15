@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -26,6 +25,17 @@ import static com.example.proyinfinixsoft.ListActivity.EXTRA_PUESTO;
 import static com.example.proyinfinixsoft.ListActivity.EXTRA_TAREA;
 import static com.example.proyinfinixsoft.ListActivity.EXTRA_URL;
 
+/**
+ * Class: DetallesActivity <br>
+ * <p>Este metodo mostrara con mas detalles la informacion de un emepleado
+ * previamente seleccionado.</p>
+ * <p>Ultima Modificacion: 14/08/2019</p>
+ *
+ * @author Sosa Omar E.
+ * @version 1.0.0
+ * @see 13/08/2019
+ * @since JSockets 1.0.0
+ */
 
 public class DetallesActivity extends AppCompatActivity {
 
@@ -38,10 +48,7 @@ public class DetallesActivity extends AppCompatActivity {
     private TextView puesto;
     private TextView tareas;
     private Button atras;
-
     private TextView circuloEdad;
-    private LinearLayout fondo;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +64,6 @@ public class DetallesActivity extends AppCompatActivity {
         });
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-        // String -> Date
-        //  SimpleDateFormat.parse(String);
-
-        // Date -> String
-        // SimpleDateFormat.format(date);
-
-
         Intent i = getIntent();
         String urlFotoEmpleado = i.getStringExtra(EXTRA_URL);
         String nombreEmpleado = i.getStringExtra(EXTRA_NOMBRE);
@@ -71,34 +71,23 @@ public class DetallesActivity extends AppCompatActivity {
 
         int edadEmpleado = i.getIntExtra(EXTRA_EDAD, 0);
 
-
         String fechaIngreso = i.getStringExtra(EXTRA_FECHA);
-
-   /*     Date date = (Date) i.getSerializableExtra(EXTRA_FECHA);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");*/
-
 
         String departamentoEmpleado = i.getStringExtra(EXTRA_DEPARTAMENTO);
         String puestoEmpleado = i.getStringExtra(EXTRA_PUESTO);
         String tareasEmpleado = i.getStringExtra(EXTRA_TAREA);
-
         String edadCir = "" + edadEmpleado;
-
 
         foto = findViewById(R.id.ivFotoDetalle);
         nombre = findViewById(R.id.tvNombreDetalle);
         apellido = findViewById(R.id.tvApellidoDetalle);
         edad = findViewById(R.id.tvEdadDetalle);
-
-
         fecha = findViewById(R.id.tvFechaIngresoDetalle);
-
         departamento = findViewById(R.id.tvDepartamentoDetalle);
         puesto = findViewById(R.id.tvPuestoDetalle);
         tareas = findViewById(R.id.tvTareasDetalle);
 
         circuloEdad = findViewById(R.id.circuloEdad);
-
 
         Picasso.with(this).load(urlFotoEmpleado).fit().centerInside().into(foto);
         nombre.setText("Nombre: " + nombreEmpleado);
@@ -108,23 +97,20 @@ public class DetallesActivity extends AppCompatActivity {
         fecha.setText("Fecha: " + fechaIngreso);
         puesto.setText("Puesto: " + puestoEmpleado);
         tareas.setText("Tarea: " + tareasEmpleado);
-
         circuloEdad.setText(edadCir);
 
 
-//CAMBIA DE COLOR LA FECHA DE ANTIGUEDAD , STATUS : OK!
+        //CAMBIA DE COLOR LA FECHA DE ANTIGUEDAD
+
         try {
 
             Calendar current = Calendar.getInstance();
             String dateInString = fechaIngreso;
-
-
             Date fechaIngr = null;
             fechaIngr = formatter.parse(dateInString);
             long fech = current.getTimeInMillis() - fechaIngr.getTime();
-
             int dias = (int) (fech / 86400000);
-            System.out.println(dias);
+            //System.out.println(dias);
 
             if (dias <= 1826) {
                 fecha.setTextColor(Color.GREEN);
@@ -133,14 +119,9 @@ public class DetallesActivity extends AppCompatActivity {
 
             } else if (dias > 1826 && dias < 3652) {
                 fecha.setTextColor(Color.BLACK);
-
             }
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
     }
-
 }

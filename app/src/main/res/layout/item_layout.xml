@@ -2,25 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fondoItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#d9d9d9"
-    android:id="@+id/fondoItem"
-    android:orientation="vertical">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/background_narajan"
+    android:orientation="vertical"
+>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/ivFotoPerfil"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="150dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:padding="10dp"
+            android:layout_marginLeft="3dp"
+
+            android:layout_marginTop="15dp"
             android:src="@drawable/gnulogo"
             tools:ignore="MissingConstraints" />
 
@@ -30,9 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:layout_toEndOf="@+id/ivFotoPerfil"
             android:textColor="#000"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.084"
             app:layout_constraintStart_toEndOf="@+id/ivFotoPerfil"
@@ -47,8 +52,9 @@
             android:layout_alignStart="@+id/tvNombre"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="71dp"
+            android:layout_marginTop="65dp"
             android:textColor="#000"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.084"
@@ -65,8 +71,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="109dp"
-            android:layout_marginEnd="34dp"
+            android:layout_marginTop="104dp"
+            android:layout_marginEnd="70dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/button_rounded"
             android:text="VER DETALLES"
