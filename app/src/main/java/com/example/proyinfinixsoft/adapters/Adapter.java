@@ -44,8 +44,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<Empleado> trabajadores;
     private OnClickItemListener mListener;
     private Button item;
+
     private LinearLayout fondo;
-    private Button verLista;
     public boolean iniciado;
 
     protected static ActivityManager activityManager;
@@ -93,13 +93,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String apellido = datosEmpleado.getApellido();
 
 
-        Picasso.with(mContext).load(fotoUrl).fit().centerInside().into(viewHolder.foto);
-        viewHolder.nombre.setText(nombre);
-        viewHolder.apellido.setText(apellido);
-
         Date fechaReg = datosEmpleado.getFechaDeIngreso();
         Calendar current = Calendar.getInstance();
-        long fech = current.getTimeInMillis() - fechaReg.getTime();
+
+        long fech = (current.getTimeInMillis() - fechaReg.getTime());
 
 
         int dias = (int) (fech / 86400000);
@@ -113,6 +110,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             fondo.setBackgroundResource(background_blanco);
         }
 
+        Picasso.with(mContext).load(fotoUrl).fit().centerInside().into(viewHolder.foto);
+        viewHolder.nombre.setText(nombre);
+        viewHolder.apellido.setText(apellido);
+
 
         if (iniciado == false) {
             item.setVisibility(View.GONE);
@@ -120,20 +121,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             item.setVisibility(View.VISIBLE);
 
         }
-
-       /* StringBuilder stringBuilder = new StringBuilder();
-        int totalNumberOfTasks = activityManager.getRunningTasks(10).size();//devuelve total numero de tasks - stacks
-
-        int flags = getWindow().getAttributes().flags;
-        stringBuilder.append("\nTotal Number of Tasks: " + totalNumberOfTasks + "\n\n");
-
-
-        if (totalNumberOfTasks == 2) {
-            item.setVisibility(View.GONE);
-
-        }*/
-
-
     }
 
 
@@ -147,7 +134,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView nombre;
         TextView apellido;
 
-        //CONSTRUCTOR
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -156,9 +142,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             apellido = itemView.findViewById(id.tvApellido);
 
             item = itemView.findViewById(id.btnDetallesItem);
-            verLista = itemView.findViewById(id.btnVerLista);
             fondo = itemView.findViewById(id.fondoItem);
-
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,7 +155,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     }
                 }
             });
-
 
         }
     }

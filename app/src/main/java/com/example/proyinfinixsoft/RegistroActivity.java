@@ -12,9 +12,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.proyinfinixsoft.entities.Usuario;
-
 import java.util.regex.Pattern;
+
 
 /**
  * Class: RegistroActivity <br>
@@ -29,6 +28,12 @@ import java.util.regex.Pattern;
  */
 public class RegistroActivity extends AppCompatActivity {
 
+
+    public static final String USER_NOMBRE = "dataNombre";
+    public static final String USER_APELLIDO = "dataApellido";
+    public static final String USER_EMAIL = "dataEmail";
+    public static final String USER_PASS = "dataPass";
+    public static final String CREDENCIAL = "credencial";
     //PATRON DE VALIDACION DE EMAIL
     public static final Pattern EMAIL_ADDRESS =
             Pattern.compile(
@@ -127,18 +132,18 @@ public class RegistroActivity extends AppCompatActivity {
                             ("credencial", Context.MODE_PRIVATE);
 
                     SharedPreferences.Editor editor = preferneces.edit();
-                    editor.putString(newEmail + "dataNombre", newNombre);
-                    editor.putString(newEmail + "dataApellido", newApellido);
-                    editor.putString(newEmail + "dataPass", newPassword);
-                    editor.putString(newEmail + "dataEmail", newEmail);
+                    editor.putString(newEmail + USER_NOMBRE, newNombre);
+                    editor.putString(newEmail + USER_APELLIDO, newApellido);
+                    editor.putString(newEmail + USER_PASS, newPassword);
+                    editor.putString(newEmail + USER_EMAIL, newEmail);
 
                     editor.commit();
 
-                    Usuario usuario = new Usuario(newNombre, newApellido, newEmail, newPassword);
+                    //  Usuario usuario = new Usuario(newNombre, newApellido, newEmail, newPassword);
 
                     Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(RegistroActivity.this, LoginActivity.class);
-                    i.putExtra("newUsuario", usuario);
+                    //  i.putExtra(NUEVO_USUARIO, usuario);
                     startActivity(i);
                     finish();
 
@@ -166,8 +171,8 @@ public class RegistroActivity extends AppCompatActivity {
         String inputEmail = email.getText().toString().trim();
 
         SharedPreferences preferences = getSharedPreferences
-                ("credencial", MODE_PRIVATE);
-        String verificarEmail = (String) preferences.getString(inputEmail + "dataEmail", "");
+                (CREDENCIAL, MODE_PRIVATE);
+        String verificarEmail = (String) preferences.getString(inputEmail + USER_EMAIL, "");
 
         if (inputEmail.isEmpty()) {
             email.setError("El campo se encuentra vacio!");

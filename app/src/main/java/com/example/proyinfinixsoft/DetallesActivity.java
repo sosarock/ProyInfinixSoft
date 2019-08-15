@@ -7,16 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.proyinfinixsoft.entities.Empleado;
 import com.squareup.picasso.Picasso;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static com.example.proyinfinixsoft.ListActivity.EXTRA_EMPLEADO;
 
 /**
  * Class: DetallesActivity <br>
@@ -31,6 +27,9 @@ import static com.example.proyinfinixsoft.ListActivity.EXTRA_EMPLEADO;
  */
 
 public class DetallesActivity extends AppCompatActivity {
+
+    public static final String TAG_ARRAY_JSON = "empleado";
+    public static final String EXTRA_FECHAFORMATO = "dd/MM/yyyy";
 
     private ImageView foto;
     private TextView nombre;
@@ -68,22 +67,18 @@ public class DetallesActivity extends AppCompatActivity {
 
         circuloEdad = findViewById(R.id.circuloEdad);
 
-
-        Empleado emp = getIntent().getParcelableExtra(EXTRA_EMPLEADO);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
+        Empleado emp = getIntent().getParcelableExtra(TAG_ARRAY_JSON);
+        SimpleDateFormat formatter = new SimpleDateFormat(EXTRA_FECHAFORMATO);
 
         Picasso.with(this).load(emp.getFoto()).fit().centerInside().into(foto);
         nombre.setText("Nombre: " + emp.getNombre());
         apellido.setText("Apellido: " + emp.getApellido());
         departamento.setText("Departamento: " + emp.getDepartamento());
         edad.setText("Edad: " + emp.getEdad());
-        fecha.setText("Fecha: " +  formatter.format(emp.getFechaDeIngreso()));
+        fecha.setText("Fecha: " + formatter.format(emp.getFechaDeIngreso()));
         puesto.setText("Puesto: " + emp.getPuesto());
         tareas.setText("Tarea: " + "\n" + emp.getTareasActuales());
         circuloEdad.setText("" + emp.getEdad());
-
-
 
         //CAMBIA DE COLOR LA FECHA DE ANTIGUEDAD
 
@@ -91,7 +86,7 @@ public class DetallesActivity extends AppCompatActivity {
 
             Calendar current = Calendar.getInstance();
 
-            String dateInString =  formatter.format(emp.getFechaDeIngreso());
+            String dateInString = formatter.format(emp.getFechaDeIngreso());
 
             Date fechaIngr = null;
             fechaIngr = formatter.parse(dateInString);

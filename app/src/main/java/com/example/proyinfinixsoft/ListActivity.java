@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,7 +35,7 @@ import java.util.Date;
  * Class: ListActivity <br>
  * <p>Este metodo mostrara una lista de empleado en el cual esta restringido a los detalles
  * sino el usuario no ha iniciado sesion con una cuenta registrada previamente.</p>
- * <p>Ultima Modificacion: 12/08/2019</p>
+ * <p>Ultima Modificacion: 15/08/2019</p>
  *
  * @author Sosa Omar E.
  * @version 1.0.0
@@ -46,9 +45,24 @@ import java.util.Date;
 
 public class ListActivity extends AppCompatActivity implements Adapter.OnClickItemListener {
 
-    public static final String EXTRA_FECHA = "fecha";
-    public static final String EXTRA_FECHAFORMATO = "fecha";
-    public static final String EXTRA_EMPLEADO = "empleado";
+    public static final String ULTIMO_NOMBRE_INGREASO = "ulitmoNombreIngresado";
+    public static final String ULTIMO_APELLIDO_INGREASO = "ultimoApellidoIngresado";
+    public static final String ULTIMO_EMAIL_INGREASO = "ulitmoEmailIngresado";
+    public static final String ULTIMO_PASS_INGREASO = "ulitmoPassIngresado";
+    public static final String USER = "usuario";
+    public static final String PREFERNECIAS = "pref";
+    public static final String TAG_ARRAY_JSON = "empleado";
+    public static final String TAG_FOTO_USER = "foto";
+    public static final String TAG_NOMBRE_USER = "nombre";
+    public static final String TAG_APELLIDO_USER = "apellido";
+    public static final String TAG_EDAD_USER = "edad";
+    public static final String TAG_FECHA_INGRESO_USER = "fecha";
+    public static final String EXTRA_FECHAFORMATO = "dd/MM/yyyy";
+    public static final String TAG_DEPARTAMENTO_USER = "departamento";
+    public static final String TAG_PUESTO_USER = "puesto";
+    public static final String TAG_TAREAS_USER = "tarea";
+    public static final String URL_JSON = "https://api.myjson.com/bins/1c3zyn";
+
 
     private RecyclerView recycler;
     private Adapter adaptor;
@@ -56,7 +70,6 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
     private RequestQueue requestQueue;
     private TextView bienvenida;
     private Button cerrarSesion;
-    private LinearLayout item;
 
 
     @SuppressLint("ResourceType")
@@ -65,27 +78,24 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-
         recycler = findViewById(R.id.rvList);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        item = findViewById(R.id.fondoItem);
         bienvenida = findViewById(R.id.tvBienvenida);
         cerrarSesion = findViewById(R.id.btnSalir);
-
 
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferneces = getSharedPreferences
-                        ("pref", Context.MODE_PRIVATE);
+                        (PREFERNECIAS, Context.MODE_PRIVATE);
 
 
                 SharedPreferences.Editor editor = preferneces.edit();
-                editor.putString("ulitmoNombreIngresado", "");
-                editor.putString("ulitmoApellidoIngresado", "");
-                editor.putString("ulitmoEmailIngresado", "");
-                editor.putString("ulitmoPassIngresado", "");
+                editor.putString(ULTIMO_NOMBRE_INGREASO, "");
+                editor.putString(ULTIMO_APELLIDO_INGREASO, "");
+                editor.putString(ULTIMO_EMAIL_INGREASO, "");
+                editor.putString(ULTIMO_PASS_INGREASO, "");
 
                 editor.commit();
                 Intent i = new Intent(ListActivity.this, LoginActivity.class);
@@ -94,10 +104,16 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
             }
         });
 
-
         trabajadores = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
 
+        Usuario usuario = getIntent().getParcelableExtra(USER);
+        if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
+            bienvenida.setText("Bienvenido " + usuario.getNombre() + "!");
+        } else {
+            bienvenida.setVisibility(View.GONE);
+            cerrarSesion.setVisibility(View.GONE);
+        }
 
         ParseJSON();
     }
@@ -111,54 +127,40 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
      */
     private void ParseJSON() {
 
-        String url = "https://api.myjson.com/bins/a5rjr";
+        String url = URL_JSON;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray("empleado");
 
+                            JSONArray jsonArray = response.getJSONArray(TAG_ARRAY_JSON);
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject emp = jsonArray.getJSONObject(i);
 
-                                String foto = emp.getString("foto");
-                                String nombre = emp.getString("nombre");
-                                String apellido = emp.getString("apellido");
-
-                                int edad = emp.getInt("edad");
-
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                                String dateInString = emp.getString("fecha");
+                                String foto = emp.getString(TAG_FOTO_USER);
+                                String nombre = emp.getString(TAG_NOMBRE_USER);
+                                String apellido = emp.getString(TAG_APELLIDO_USER);
+                                int edad = emp.getInt(TAG_EDAD_USER);
+                                SimpleDateFormat formatter = new SimpleDateFormat(EXTRA_FECHAFORMATO);
+                                String dateInString = emp.getString(TAG_FECHA_INGRESO_USER);
                                 Date fechaIngreso = formatter.parse(dateInString);
-
-                                String departamento = emp.getString("departamento");
-                                String puesto = emp.getString("puesto");
-                                String tareaActuales = emp.getString("tarea");
-
+                                String departamento = emp.getString(TAG_DEPARTAMENTO_USER);
+                                String puesto = emp.getString(TAG_PUESTO_USER);
+                                String tareaActuales = emp.getString(TAG_TAREAS_USER);
 
                                 trabajadores.add(new Empleado(foto, nombre, apellido, edad, fechaIngreso, departamento, puesto, tareaActuales));
 
                             }
 
-                            Usuario usuario = getIntent().getParcelableExtra("usuario");
+                            Usuario usuario = getIntent().getParcelableExtra(USER);
                             if (!usuario.getEmail().equals("") && !usuario.getPassword().equals("")) {
-
-                                bienvenida.setText("Bienvenido " + usuario.getNombre() + "!");
-
-
                                 adaptor = new Adapter(ListActivity.this, trabajadores, true);
                                 recycler.setAdapter(adaptor);
                                 adaptor.setOnClickItemListener(ListActivity.this);
-
                             } else {
-
-
-                                bienvenida.setVisibility(View.GONE);
-                                cerrarSesion.setVisibility(View.GONE);
-
                                 adaptor = new Adapter(ListActivity.this, trabajadores, false);
                                 recycler.setAdapter(adaptor);
                                 adaptor.setOnClickItemListener(ListActivity.this);
@@ -193,8 +195,8 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
 
         Intent detalleIntent = new Intent(ListActivity.this, DetallesActivity.class);
         Empleado clickInEmpleado = trabajadores.get(position);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        detalleIntent.putExtra(EXTRA_FECHA, "" + formatter.format(clickInEmpleado.getFechaDeIngreso()));
+        SimpleDateFormat formatter = new SimpleDateFormat(EXTRA_FECHAFORMATO);
+        detalleIntent.putExtra(TAG_FECHA_INGRESO_USER, "" + formatter.format(clickInEmpleado.getFechaDeIngreso()));
         long fechaEmpleado = clickInEmpleado.getFechaDeIngreso().getTime();
 
         Empleado emp = new Empleado(
@@ -207,10 +209,7 @@ public class ListActivity extends AppCompatActivity implements Adapter.OnClickIt
                 clickInEmpleado.getPuesto(),
                 clickInEmpleado.getTareasActuales());
 
-        detalleIntent.putExtra(EXTRA_EMPLEADO, emp);
+        detalleIntent.putExtra(TAG_ARRAY_JSON, emp);
         startActivity(detalleIntent);
-
-
     }
-
 }

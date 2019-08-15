@@ -28,6 +28,20 @@ import java.util.regex.Pattern;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String USER_NOMBRE = "dataNombre";
+    public static final String USER_APELLIDO = "dataApellido";
+    public static final String USER_EMAIL = "dataEmail";
+    public static final String USER_PASS = "dataPass";
+    public static final String ULTIMO_NOMBRE_INGREASO = "ulitmoNombreIngresado";
+    public static final String ULTIMO_APELLIDO_INGREASO = "ultimoApellidoIngresado";
+    public static final String ULTIMO_EMAIL_INGREASO = "ulitmoEmailIngresado";
+    public static final String ULTIMO_PASS_INGREASO = "ulitmoPassIngresado";
+    public static final String USER = "usuario";
+    public static final String PREFERNECIAS = "pref";
+    //  public static final String PREFERNECIAS_VISIBLE="prefVisible";
+    public static final String CREDENCIAL = "credencial";
+
+
     //PATRON DE VALIDACION DE EMAIL
     public static final Pattern EMAIL_ADDRESS =
             Pattern.compile(
@@ -56,10 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView tvRegistrar;
     private Button btnEntrar;
     private Button btnVerLista;
-
-
-    public boolean sinSesion = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,14 +108,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String email = etEmail.getText().toString().trim();
                 String pass = etPass.getText().toString();
                 SharedPreferences preferences = getSharedPreferences
-                        ("credencial", MODE_PRIVATE);
+                        (CREDENCIAL, MODE_PRIVATE);
 
-                String verificarEmail = (String) preferences.getString(email + "dataEmail", "");
+                String verificarEmail = (String) preferences.getString(email + USER_EMAIL, "");
 
-                String nombreDetails = (String) preferences.getString(email + "dataNombre", "");
-                String apellidoDetails = (String) preferences.getString(email + "dataApellido", "");
-                String emailDetails = (String) preferences.getString(email + "dataEmail", "");
-                String passDetails = (String) preferences.getString(email + "dataPass", "");
+                String nombreDetails = (String) preferences.getString(email + USER_NOMBRE, "");
+                String apellidoDetails = (String) preferences.getString(email + USER_APELLIDO, "");
+                String emailDetails = (String) preferences.getString(email + USER_EMAIL, "");
+                String passDetails = (String) preferences.getString(email + USER_PASS, "");
 
 
                 if (email.length() == 0) {
@@ -129,22 +139,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                         SharedPreferences preferneces = getSharedPreferences
-                                ("pref", Context.MODE_PRIVATE);
+                                (PREFERNECIAS, Context.MODE_PRIVATE);
 
                         SharedPreferences.Editor editor = preferneces.edit();
-                        editor.putString("ulitmoNombreIngresado", nombreDetails);
-                        editor.putString("ulitmoApellidoIngresado", apellidoDetails);
-                        editor.putString("ulitmoEmailIngresado", emailDetails);
-                        editor.putString("ulitmoPassIngresado", passDetails);
+                        editor.putString(ULTIMO_NOMBRE_INGREASO, nombreDetails);
+                        editor.putString(ULTIMO_APELLIDO_INGREASO, apellidoDetails);
+                        editor.putString(ULTIMO_EMAIL_INGREASO, emailDetails);
+                        editor.putString(ULTIMO_PASS_INGREASO, passDetails);
 
                         editor.commit();
 
                         Usuario usuario = new Usuario(nombreDetails, apellidoDetails, emailDetails, passDetails);
                         Intent i = new Intent(LoginActivity.this, ListActivity.class);
-                       /* if (ListActivity.class.equals(ListActivity.class)) {
-                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_SINGLE_TOP);
-                        }*/
-                        i.putExtra("usuario", usuario);
+                        i.putExtra(USER, usuario);
                         startActivity(i);
                         finish();
 
@@ -161,24 +168,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                 SharedPreferences preferneces = getSharedPreferences
-                        ("pref", Context.MODE_PRIVATE);
+                        (PREFERNECIAS, Context.MODE_PRIVATE);
 
                 SharedPreferences.Editor editor = preferneces.edit();
-                editor.putString("ulitmoNombreIngresado", "");
-                editor.putString("ulitmoApellidoIngresado", "");
-                editor.putString("ulitmoEmailIngresado", "");
-                editor.putString("ulitmoPassIngresado", "");
-                editor.putString("prefVisible", "");
+                editor.putString(ULTIMO_NOMBRE_INGREASO, "");
+                editor.putString(ULTIMO_APELLIDO_INGREASO, "");
+                editor.putString(ULTIMO_EMAIL_INGREASO, "");
+                editor.putString(ULTIMO_PASS_INGREASO, "");
+                //  editor.putString(PREFERNECIAS_VISIBLE, "");
 
                 editor.commit();
 
-
                 Usuario usuario = new Usuario("", "", "", "");
                 Intent i2 = new Intent(LoginActivity.this, ListActivity.class);
-              /*  if (ListActivity.class.equals(ListActivity.class)) {
-                    i2.setFlags(i2.FLAG_ACTIVITY_NEW_TASK | i2.FLAG_ACTIVITY_SINGLE_TOP);
-                }*/
-                i2.putExtra("usuario", usuario);
+                i2.putExtra(USER, usuario);
                 startActivity(i2);
                 break;
         }
